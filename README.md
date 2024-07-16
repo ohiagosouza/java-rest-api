@@ -47,8 +47,8 @@ The API will be accessible at `http://127.0.0.1:8080`
 
 - **GET /users**: Returns all users.
 - **POST /users**: Accepts a JSON body to create a user in Database.
--- **PUT /users/{id}**: Accepts a JSON body to update a user.
--- **DELETE /users/{id}**: Accepts an id to delete a user;
+- **PUT /users/{id}**: Accepts a JSON body to update a user.
+- **DELETE /users/{id}**: Accepts an id to delete a user;
   
 Example JSON body for POST `/users`:
 ```json
