@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +36,7 @@ public class UsersController {
       Users existingUser = userRegistered.get();
       existingUser.setUsername(user.getUsername());
       existingUser.setPassword(user.getPassword());
+      existingUser.setUpdatedAt(user.getUpdatedAt());
       repository.save(existingUser);
     } else {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
