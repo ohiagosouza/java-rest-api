@@ -28,7 +28,18 @@ Follow these steps to run the project locally:
    ```
 
 3. Configure the database name in `src/main/resources/application.properties`
-4. Run `RestApiApplication`
+4. Database configuration
+    ```
+	spring.jpa.hibernate.ddl-auto=update
+	
+	spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+	spring.datasource.driverClassName=org.postgresql.Driver
+	
+	spring.datasource.url=jdbc:postgresql://localhost:5432/your-database
+	spring.datasource.username=postgres
+	spring.datasource.password=postgres
+   ```
+6. Run `RestApiApplication`
 
 The API will be accessible at `http://127.0.0.1:8080`
 
