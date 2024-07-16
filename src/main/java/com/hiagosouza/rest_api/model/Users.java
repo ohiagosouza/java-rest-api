@@ -2,6 +2,8 @@ package com.hiagosouza.rest_api.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Users {
   @Id
@@ -11,6 +13,8 @@ public class Users {
   private String username;
   @Column(length = 120, nullable = false)
   private String password;
+  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime updatedAt = LocalDateTime.now();
 
   @Override
   public String toString() {
@@ -35,5 +39,21 @@ public class Users {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
   }
 }
