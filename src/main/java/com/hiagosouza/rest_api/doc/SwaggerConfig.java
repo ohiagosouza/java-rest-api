@@ -8,7 +8,6 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -17,10 +16,9 @@ import java.util.HashSet;
 public class SwaggerConfig {
   private Contact contact() {
     return new Contact(
-            "Hiago Souza",
-            "https://github.com/ohiagosouza",
-            "ohiagossouza@gmail.com"
-    );
+        "Hiago Souza",
+        "https://github.com/ohiagosouza",
+        "ohiagossouza@gmail.com");
   }
 
   private ApiInfoBuilder apiInfos() {
@@ -42,13 +40,13 @@ public class SwaggerConfig {
     Docket docket = new Docket(DocumentationType.SWAGGER_2);
 
     docket
-            .select()
-            .apis(RequestHandlerSelectors.basePackage("com.hiagosouza.rest_api.controller"))
-            .paths(PathSelectors.any())
-            .build()
-            .apiInfo(this.apiInfos().build())
-            .consumes(new HashSet<>(Arrays.asList("application/json")))
-            .produces(new HashSet<String>(Arrays.asList("application/json")));
+        .select()
+        .apis(RequestHandlerSelectors.basePackage("com.hiagosouza.rest_api.controller"))
+        .paths(PathSelectors.any())
+        .build()
+        .apiInfo(this.apiInfos().build())
+        .consumes(new HashSet<>(Arrays.asList("application/json")))
+        .produces(new HashSet<String>(Arrays.asList("application/json")));
 
     return docket;
   }

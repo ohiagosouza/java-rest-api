@@ -1,39 +1,44 @@
 package com.hiagosouza.rest_api.controller;
 
-import com.hiagosouza.rest_api.model.Users;
+import com.hiagosouza.rest_api.model.User;
 import com.hiagosouza.rest_api.repository.UserRepository;
+import com.hiagosouza.rest_api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-
+import java.util.*;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "*")
 public class UsersController {
   @Autowired
   private UserRepository repository;
 
-  @GetMapping
-  public List<Users> getUsers() {
+  @Autowired
+  private UserService userService;
+
+  @GetMapping(value = "/all")
+  public List<User> getUsers() {
     return repository.findAll();
   }
 
-  @PostMapping
-  public void saveUser(@RequestBody Users user) {
-    repository.save(user);
+  @GetMapping(value = "/create")
+  public HttpStatus postUser(@RequestBody User user) {
+    userService.createUser(user);
+    return HttpStatus.CREATED;
   }
 
-  @PutMapping("/{id}")
-  public void updateUser(@PathVariable Integer id, @RequestBody Users user) {
-    Optional<Users> userRegistered = repository.findById(id);
+  @PutMapping(value = "/{id}")
+  public void updateUser(@PathVariable Long id, @RequestBody User user) {
+    Optional<User> userRegistered = repository.findById(id);
 
     if (userRegistered.isPresent()) {
-      Users existingUser = userRegistered.get();
+      User existingUser = userRegistered.get();
+      existingUser.setName(user.getName());
+      existingUser.setRoles(user.getRoles());
       existingUser.setUsername(user.getUsername());
       existingUser.setPassword(user.getPassword());
       existingUser.setUpdatedAt(user.getUpdatedAt());
@@ -43,14 +48,14 @@ public class UsersController {
     }
   }
 
-  @GetMapping("/{username}")
-  public Users findUser(@PathVariable String username) {
+  @GetMapping(value = "/{username}")
+  public User findUser(@PathVariable String username) {
     return repository.findByUsername(username);
   }
 
-  @DeleteMapping("/{id}")
-  public void deleteUser(@PathVariable Integer id) {
-    Optional<Users> userRegistered = repository.findById(id);
+  @DeleteMapping(value = "/{id}")
+  public void deleteUser(@PathVariable Long id) {
+    Optional<User> userRegistered = repository.findById(id);
 
     if (userRegistered.isPresent()) {
       repository.deleteById(id);
