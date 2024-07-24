@@ -12,11 +12,11 @@ public class WelcomeController {
 
   @GetMapping("/user")
   public String privateUser() {
-    return "<h1>Private user<h1>";
+    return "<h1>User<h1>";
   }
 
   @GetMapping("/manager")
   public String privateAdmin() {
-    return "<h1>Private Admin<h1>";
+    return "<h1>Admin<h1>";
   }
 }

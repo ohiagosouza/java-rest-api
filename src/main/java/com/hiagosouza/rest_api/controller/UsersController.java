@@ -5,6 +5,7 @@ import com.hiagosouza.rest_api.repository.UserRepository;
 import com.hiagosouza.rest_api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,15 +21,15 @@ public class UsersController {
   @Autowired
   private UserService userService;
 
-  @GetMapping(value = "/all")
-  public List<User> getUsers() {
-    return repository.findAll();
+  @GetMapping("/list-all")
+  public ResponseEntity<Iterable<User>> getUsers() {
+    return ResponseEntity.ok(repository.findAll());
   }
 
-  @GetMapping(value = "/create")
-  public HttpStatus postUser(@RequestBody User user) {
+  @PostMapping("/create")
+  public ResponseEntity<User> postUser(@RequestBody User user) {
     userService.createUser(user);
-    return HttpStatus.CREATED;
+    return ResponseEntity.ok(user);
   }
 
   @PutMapping(value = "/{id}")

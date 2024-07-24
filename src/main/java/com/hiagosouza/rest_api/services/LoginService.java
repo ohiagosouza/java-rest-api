@@ -8,19 +8,19 @@ import com.hiagosouza.rest_api.repository.UserRepository;
 import com.hiagosouza.rest_api.security.JWTCreator;
 import com.hiagosouza.rest_api.security.JWTObject;
 
-import io.swagger.models.HttpMethod;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.Instant;
 import java.util.Date;
 
 @RestController
-@RequestMapping(value = "/login", method = RequestMethod.POST)
 public class LoginService {
   @Autowired
   private PasswordEncoder encoder;
@@ -29,7 +29,11 @@ public class LoginService {
   @Autowired
   private UserRepository repository;
 
+  private final Logger logger = LoggerFactory.getLogger(LoginService.class);
+
+  @RequestMapping(value = "/login", method = RequestMethod.POST)
   public Session userLogin(@RequestBody Login login) {
+    logger.info("Login attempt for user: {} ", login.getUsername());
     User user = repository.findByUsername(login.getUsername());
     if (user != null) {
       boolean passwordOk = encoder.matches(login.getPassword(), user.getPassword());
@@ -42,12 +46,12 @@ public class LoginService {
       session.setLogin(user.getUsername());
 
       JWTObject jwtObject = new JWTObject();
-      jwtObject.setIssuedAt(new Date(System.currentTimeMillis()));
-      jwtObject.setExpiration((new Date(System.currentTimeMillis() +
-          JWTSecurityConfig.EXPIRATION)));
+      jwtObject.setIssuedAt(Date.from(Instant.now()));
+      jwtObject.setExpiration(Date.from(Instant.now().plusMillis(JWTSecurityConfig.EXPIRATION)));
       jwtObject.setRoles(user.getRoles());
       session.setToken(JWTCreator.create(JWTSecurityConfig.PREFIX,
           JWTSecurityConfig.KEY, jwtObject));
+
       return session;
     } else {
       throw new RuntimeException("Erro ao tentar fazer login");
