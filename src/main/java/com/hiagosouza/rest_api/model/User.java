@@ -22,8 +22,8 @@ public class User {
   @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
   @Column(name = "role_id")
   private List<String> roles = new ArrayList<>();
-  private LocalDateTime createdAt = LocalDateTime.now();
-  private LocalDateTime updatedAt = LocalDateTime.now();
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 
   // ToString
 

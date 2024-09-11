@@ -3,6 +3,7 @@ package com.hiagosouza.rest_api.config;
 import com.hiagosouza.rest_api.security.JWTFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -44,8 +45,9 @@ public class WebSecurityConfig {
               auth.requestMatchers(SWAGGER_WHITELIST).permitAll();
               auth.requestMatchers("/").permitAll();
               auth.requestMatchers("/login", "/users/create").permitAll();
-              auth.requestMatchers("/users/list-all").hasRole("MANAGER");
-              auth.requestMatchers("/manager").hasRole("MANAGER");
+              auth.requestMatchers("/users/list-all", "/manager").hasRole("MANAGER");
+              auth.requestMatchers(HttpMethod.DELETE, "/users/{id}").hasRole("MANAGER");
+              auth.requestMatchers(HttpMethod.PUT, "/users/{id}").hasRole("MANAGER");
               auth.requestMatchers("/user").hasAnyRole("USER", "MANAGER");
               auth.anyRequest().authenticated();
             })

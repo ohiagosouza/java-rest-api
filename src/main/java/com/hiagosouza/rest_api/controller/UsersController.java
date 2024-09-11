@@ -2,14 +2,18 @@ package com.hiagosouza.rest_api.controller;
 
 import com.hiagosouza.rest_api.model.User;
 import com.hiagosouza.rest_api.repository.UserRepository;
+import com.hiagosouza.rest_api.services.LoginService;
 import com.hiagosouza.rest_api.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -32,18 +36,12 @@ public class UsersController {
     return ResponseEntity.ok(user);
   }
 
-  @PutMapping(value = "/{id}")
+  @PutMapping("/{id}")
   public void updateUser(@PathVariable Long id, @RequestBody User user) {
     Optional<User> userRegistered = repository.findById(id);
 
     if (userRegistered.isPresent()) {
-      User existingUser = userRegistered.get();
-      existingUser.setName(user.getName());
-      existingUser.setRoles(user.getRoles());
-      existingUser.setUsername(user.getUsername());
-      existingUser.setPassword(user.getPassword());
-      existingUser.setUpdatedAt(user.getUpdatedAt());
-      repository.save(existingUser);
+      userService.updateUser(user);
     } else {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
